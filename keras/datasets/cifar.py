@@ -5,13 +5,11 @@ from six.moves import cPickle
 
 
 def load_batch(fpath, label_key='labels'):
-    """Internal utility for parsing CIFAR data.
-
+    """
+    Internal utility for parsing CIFAR data.
     # Arguments
         fpath: path the file to parse.
-        label_key: key for label data in the retrieve
-            dictionary.
-
+        label_key: key for label data in the retrieve dictionary.
     # Returns
         A tuple `(data, labels)`.
     """
@@ -28,6 +26,8 @@ def load_batch(fpath, label_key='labels'):
     f.close()
     data = d['data']
     labels = d[label_key]
-
+    # gives a new shape to an array without changing its data
+    # data shape is (10000, 3072)
+    # reshaped result is (10000, 3, 32, 32)
     data = data.reshape(data.shape[0], 3, 32, 32)
     return data, labels
