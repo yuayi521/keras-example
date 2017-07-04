@@ -1,23 +1,17 @@
 from __future__ import absolute_import
-from .cifar import load_batch
-from ..utils.data_utils import get_file
-from .. import backend as K
+from keras.datasets.cifar import load_batch
+from keras import backend as K
 import numpy as np
 import os
 
 
 def load_data():
     """Loads CIFAR10 dataset.
-
     # Returns
         Tuple of Numpy arrays: `(x_train, y_train), (x_test, y_test)`.
     """
-    dirname = 'cifar-10-batches-py'
-    origin = 'http://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz'
-    path = get_file(dirname, origin=origin, untar=True)
-
+    path = '/home/yuquanjie/Download/cifar-10-batches-py'
     num_train_samples = 50000
-
     x_train = np.zeros((num_train_samples, 3, 32, 32), dtype='uint8')
     y_train = np.zeros((num_train_samples,), dtype='uint8')
 
@@ -26,6 +20,9 @@ def load_data():
         data, labels = load_batch(fpath)
         x_train[(i - 1) * 10000: i * 10000, :, :, :] = data
         y_train[(i - 1) * 10000: i * 10000] = labels
+
+    print x_train.shape
+    print y_train.shape
 
     fpath = os.path.join(path, 'test_batch')
     x_test, y_test = load_batch(fpath)
@@ -38,3 +35,6 @@ def load_data():
         x_test = x_test.transpose(0, 2, 3, 1)
 
     return (x_train, y_train), (x_test, y_test)
+
+if __name__ == '__main__':
+    load_data()
